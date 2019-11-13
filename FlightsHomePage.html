@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="FlightHomePage_CSS.css" rel="stylesheet" />
+
+    <title>ANT Flights</title>
+</head>
+<body>
+
+    <div class="container-fluid" id="frame">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>Flight Information</h1>
+
+
+                <div class="row" id="destenationDIV">
+                    <div class="col-sm-12">
+                        <p>
+                            Fly From
+                        </p>
+                        <input type="text" class="form-control" placeholder="Country, city or airport" name="text1">
+
+                        <p>
+                            Fly To
+                        </p>
+                        <input type="text" class="form-control" placeholder="Country, city or airport" name="text2">
+                    </div>
+                </div>
+
+
+                <div class="row" id="dateDIV">
+                    <div class="col-sm-12">
+                        <p>
+                            Depart
+                        </p>
+                        <input type="datetime-local" class="form-control" placeholder="Depart" name="text1">
+
+                        <p>
+                            Return
+                        </p>
+                        <input type="datetime-local" class="form-control" placeholder="Return" name="text2">
+                    </div>
+
+                </div>
+                <div id="btnSearch">
+                    <button type="button" class="btn btn-primary btn-block">Search</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+</body>
+</html>
