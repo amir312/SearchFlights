@@ -8,9 +8,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link href="FlightHomePage_CSS.css" rel="stylesheet" />
+    <script src="AJAXcall.js"></script>
+
 
     <title>ANT Flights</title>
+
+    <script>
+        $(document).ready(function () {
+            $("#searchBTN").click(getFlightFunc);
+        });
+
+        function getFlightFunc() {
+            ajaxCall("GET", "../api/Flights", "", successCB,errorCB)
+        }
+
+        function successCB(data) {
+            alert(data);
+        }
+
+        function errorCB(err) {
+            alert(err);
+        }
+
+
+    </script>
+
 </head>
+
+
+
+
+
 <body>
 
     <div class="container-fluid" id="frame">
@@ -49,7 +77,7 @@
 
                 </div>
                 <div id="btnSearch">
-                    <button type="button" class="btn btn-primary btn-block">Search</button>
+                    <button type="button" class="btn btn-primary btn-block" id="searchBTN">Search</button>
                 </div>
 
             </div>
