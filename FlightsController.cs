@@ -18,6 +18,7 @@ namespace HW1.Controllers
             return flt1.getFlight();
         }
 
+
         // GET api/<controller>/5
         public string Get(int id)
         {
@@ -25,8 +26,9 @@ namespace HW1.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Flight flt1)
         {
+            Flight.flightList.Add(flt1);
         }
 
         // PUT api/<controller>/5
