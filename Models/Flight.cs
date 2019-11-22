@@ -7,31 +7,40 @@ namespace HW1.Models
 {
     public class Flight
     {
-        private string flyFrom;
-        private string flyTo;
-        private DateTime DepartDate;
-        private DateTime ReturnDate;
+       public static List<Flight> flightList = new List<Flight>();
 
+        float price;
+        string flyFrom;
+        string flyTo;
+        string departDate;
+        string returnDate;
+        List<string> subflights = new List<string>();
+        List<string> airlines = new List<string>();
+
+
+        public float Price { get => price; set => price = value; }
         public string FlyFrom { get => flyFrom; set => flyFrom = value; }
         public string FlyTo { get => flyTo; set => flyTo = value; }
-        public DateTime Depart { get => DepartDate; set => DepartDate = value; }
-        public DateTime Return { get => ReturnDate; set => ReturnDate = value; }
-
-
+        public string DepartDate { get => DepartDate; set => DepartDate = value; }
+        public string ReturnDate { get => ReturnDate; set => ReturnDate = value; }
+        public List<string> Subflights { get => subflights; set => subflights = value; }
+        public List<string> Airlines { get => airlines; set => airlines = value; }
+       
         public Flight() { }
-
-        public Flight(string _flyfrom, string _flyTo, DateTime _DepartDate,DateTime _ReturnDate)
+        public Flight(float price, string flyfrom, string flyto, string departdate, string returedate, List<string> subflight, List<string> airlines )
         {
-            FlyFrom = _flyfrom;
-            FlyTo = _flyTo;
-            Depart = _DepartDate;
-            Return = _ReturnDate;
+            Price = price;
+            FlyFrom = flyFrom;
+            FlyTo = flyto;
+            DepartDate = departDate;
+            ReturnDate = returedate;
+            Subflights = subflight;
+            Airlines = airlines;
+
         }
 
         public List<Flight> getFlight()
         {
-            List<Flight> flightList = new List<Flight>();
-            Return.Add(new Flight("TLV", "JFK", '2013-01-29', '2013-01-29'));
             return flightList;
 
         }
