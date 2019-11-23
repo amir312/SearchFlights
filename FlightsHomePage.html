@@ -25,6 +25,7 @@
 
         function getFlightFunc() {
             ///////////////////////////////////////////מקבל פרטים ממשתמש ומאתחל תתאריכים ויעדים/
+            const partner = "tamir";
             var from = $("#flyfrominput").val();
             var to = $("#flytoinput").val();
             var startDate = $("#departinput").val();
@@ -38,7 +39,7 @@
             startDate = Sday+"/"+Smonth+"/"+Syear;
             returnDate = Tday+"/"+Tmonth+"/"+Tyear
             /////////////////////////////////////////////////////////END/
-            ajaxCall("GET", "https://api.skypicker.com/flights?flyFrom=PRG&to=LGW&dateFrom=18/11/2019&dateTo=12/12/2019&partner=benny", " ", DataGenertor, errorData);
+            ajaxCall("GET", "https://api.skypicker.com/flights?flyFrom=" + from + "&to=" + to + "&dateFrom=" + startDate + "&dateTo=" + returnDate + "&partner=amir", " ", DataGenertor, errorData);
 
             /////////////////////////////////////////////
             //ajaxCall("GET", "https://api.skypicker.com/flights?flyFrom=" + from + "&to=" + to + "&dateFrom=" + startDate + "&dateTo=" + returnDate + "&partner=amir", " ", DataGenertor, errorData);
@@ -87,20 +88,17 @@
             console.log(err);
         }
 
-        function addToMyFlights(index) {
+         function addToMyFlights(index) {
             var myflt = {
 
         "price": document.getElementById(`price${index}`).textContent,
-        "flyFrom":document.getElementById(`flyFrom${index}`).textContent,
-        "flyTo":document.getElementById(`flyTo${index}`).textContent,
-        "departDate":document.getElementById(`departDate${index}`).textContent,
-        "returnDate":document.getElementById(`returnDate${index}`).textContent,
-        "subflights":document.getElementById(`subflights${index}`).textContent,
+        "flyFrom":document.getElementById(`cityFrom${index}`).textContent,
+        "flyTo":document.getElementById(`cityTo${index}`).textContent,
+        "departDate":document.getElementById(`dip_date${index}`).textContent,
+        "returnDate":document.getElementById(`arr_date${index}`).textContent,
         "airlines":document.getElementById(`airlines${index}`).textContent,
-            }
-
-                        ajaxCall("POST", "../api/Flights", JSON.stringify(myflt), postMyFltSuccess, postMyFltError)
-
+           }
+           ajaxCall("POST", "../api/Flights", JSON.stringify(myflt), postMyFltSuccess, postMyFltError);
 
         }
 
