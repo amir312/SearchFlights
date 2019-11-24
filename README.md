@@ -33,6 +33,4 @@ On Model:
 
 
 
-   public List<string> Routes { get; set; }
-        
-                public List<string> Routes { get; set; 
+        public List<string> Routes { get; set; }
