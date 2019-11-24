@@ -29,3 +29,8 @@ On Model:
         
         
                 <input type="button" value="הצג עם עצירות" id="ConButton" />
+
+
+
+
+   public List<string> Routes { get; set; }
