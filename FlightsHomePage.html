@@ -10,14 +10,14 @@
     <link href="FlightHomePage_CSS.css" rel="stylesheet" />
     <script src="../Scripts/ajaxCall.js"></script>
 
-
     <title>ANT Flights</title>
 
     <script>
         $(document).ready(function () {
             ajaxCall("GET", "../api/Flights", "", GETDsuccessCB, GETDerrorCB)
             $("#searchBTN").click(getFlightFunc);
-           $("#MyflightBTN").click(getmyflightsList);
+            $("#MyflightBTN").click(getmyflightsList);
+            $("#ConBTN").click(ShowFilter);
         });
 
         function GETDsuccessCB(data) { console.log(data); }
@@ -25,25 +25,26 @@
 
         function getFlightFunc() {
             ///////////////////////////////////////////מקבל פרטים ממשתמש ומאתחל תתאריכים ויעדים/
+            const partner = "tamir";
             var from = $("#flyfrominput").val();
             var to = $("#flytoinput").val();
             var startDate = $("#departinput").val();
             var returnDate = $("#returninput").val();
-            let Syear = startDate.substring(0,4);
-            let Sday = startDate.substring(5,7);
-            let Smonth = startDate.substring(8,10);
-            let Tyear = returnDate.substring(0,4);
-            let Tday = returnDate.substring(5,7);
-            let Tmonth = returnDate.substring(8,10);
-            startDate = Sday+"/"+Smonth+"/"+Syear;
-            returnDate = Tday+"/"+Tmonth+"/"+Tyear
+            let Syear = startDate.substring(0, 4);
+            let Sday = startDate.substring(5, 7);
+            let Smonth = startDate.substring(8, 10);
+            let Tyear = returnDate.substring(0, 4);
+            let Tday = returnDate.substring(5, 7);
+            let Tmonth = returnDate.substring(8, 10);
+            startDate = Sday + "/" + Smonth + "/" + Syear;
+            returnDate = Tday + "/" + Tmonth + "/" + Tyear
             /////////////////////////////////////////////////////////END/
-            ajaxCall("GET", "https://api.skypicker.com/flights?flyFrom=PRG&to=LGW&dateFrom=18/11/2019&dateTo=12/12/2019&partner=benny", " ", DataGenertor, errorData);
+            ajaxCall("GET", "https://api.skypicker.com/flights?flyFrom=" + from + "&to=" + to + "&dateFrom=" + startDate + "&dateTo=" + returnDate + "&partner=amir", " ", DataGenertor, errorData);
 
             /////////////////////////////////////////////
             //ajaxCall("GET", "https://api.skypicker.com/flights?flyFrom=" + from + "&to=" + to + "&dateFrom=" + startDate + "&dateTo=" + returnDate + "&partner=amir", " ", DataGenertor, errorData);
             ////////////////////////////////////////////
-        } 
+        }
 
 
         function DataGenertor(data) {
@@ -56,25 +57,25 @@
             for (var i = 0; i < data.length; i++) {
                 str = '';
                 str = `
-                <div>
-                <h1>Flight Details:</h1>
-                <p> Price: </p> <p id="price${i}">${data[i].conversion.EUR}</p><p> €</p>
-                <p> Departure Time: </p> <p id="dip_date${i}">${new Date(data[i].dTimeUTC * 1000)}</p>
-                <p> Arrival Time:  </p> <p id="arr_date${i}">${new Date(data[i].aTimeUTC * 1000)}</p>
-                <p> Departure City: </p> <p id="cityFrom${i}">${data[i].cityFrom}</p>
-                <p> Arrival City: </p> <p id="cityTo${i}">${data[i].cityTo}</p>
-                <p> Airlines: </p> <p id="airlines${i}">${data[i].airlines}</p> `;
+                    <div id="FlightsDiv">
+                    <h1>Flight Details:</h1>
+                    <p> Price: </p> <p id="price${i}">${data[i].conversion.EUR}</p><p> €</p>
+                    <p> Departure Time: </p> <p id="dip_date${i}">${new Date(data[i].dTimeUTC * 1000)}</p>
+                    <p> Arrival Time:  </p> <p id="arr_date${i}">${new Date(data[i].aTimeUTC * 1000)}</p>
+                    <p> Departure City: </p> <p id="cityFrom${i}">${data[i].cityFrom}</p>
+                    <p> Arrival City: </p> <p id="cityTo${i}">${data[i].cityTo}</p>
+                    <p> Airlines: </p> <p id="airlines${i}">${data[i].airlines}</p> `;
                 //הדפסת פירוט הקונקשנים של הטיסה
                 for (var j = 0; j < data[i].route.length; j++) {
                     str += `
-                        <div id="subflights${i}">
-                        <h2>Connection Flight No.${j + 1}:</h2>
-                        <p>${data[i].route[j].cityFrom}</p>
-                        <p>${data[i].route[j].cityTo}</p>
-                        <p>${new Date(data[i].route[j].dTimeUTC * 1000)}</p>
-                        <p>${new Date(data[i].route[j].aTimeUTC * 1000)}</p>
-                        <p>${data[i].route[j].flight_no}</p>
-                        </div>`;
+                            <div id="subflights${i}">
+                            <h2>Connection Flight No.${j + 1}:</h2>
+                            <p>${data[i].route[j].cityFrom}</p>
+                            <p>${data[i].route[j].cityTo}</p>
+                            <p>${new Date(data[i].route[j].dTimeUTC * 1000)}</p>
+                            <p>${new Date(data[i].route[j].aTimeUTC * 1000)}</p>
+                            <p>${data[i].route[j].flight_no}</p>
+                            </div>`;
                 }
                 str += `<button type="button" id="${i}" onclick="addToMyFlights(${i})">Add</button>`;
                 str += `</div>`;
@@ -82,7 +83,13 @@
 
             }
         }
-                        
+
+        function ShowFilter() {
+            CityC = $("#Set_Connection").val();
+            ajaxCall("GET", `../api/Flights/${CityC}`, getMyFlightsSuccess, getMyFlightsError);
+        }
+
+
         function errorData(err) {
             console.log(err);
         }
@@ -90,24 +97,19 @@
         function addToMyFlights(index) {
             var myflt = {
 
-        "price": document.getElementById(`price${index}`).textContent,
-        "flyFrom":document.getElementById(`flyFrom${index}`).textContent,
-        "flyTo":document.getElementById(`flyTo${index}`).textContent,
-        "departDate":document.getElementById(`departDate${index}`).textContent,
-        "returnDate":document.getElementById(`returnDate${index}`).textContent,
-        "subflights":document.getElementById(`subflights${index}`).textContent,
-        "airlines":document.getElementById(`airlines${index}`).textContent,
+                "price": document.getElementById(`price${index}`).textContent,
+                "flyFrom": document.getElementById(`cityFrom${index}`).textContent,
+                "flyTo": document.getElementById(`cityTo${index}`).textContent,
+                "departDate": document.getElementById(`dip_date${index}`).textContent,
+                "returnDate": document.getElementById(`arr_date${index}`).textContent,
+                "airlines": document.getElementById(`airlines${index}`).textContent,
             }
-
-                        ajaxCall("POST", "../api/Flights", JSON.stringify(myflt), postMyFltSuccess, postMyFltError)
-
+            ajaxCall("POST", "../api/Flights", JSON.stringify(myflt), postMyFltSuccess, postMyFltError);
 
         }
 
-         function postMyFltSuccess(data) {
+        function postMyFltSuccess(data) {
             console.log(data);
-            alert("yess");
-            
 
         }
         function postMyFltError(err) {
@@ -115,7 +117,7 @@
         }
 
 
-         function getmyflightsList() {
+        function getmyflightsList() {
             ajaxCall("GET", "../api/Flights", "", getMyFlightsSuccess, getMyFlightsError);
         }
 
@@ -126,13 +128,13 @@
             for (var i = 0; i < data.length; i++) {
                 str = '';
                 str = `
-                <div>
-                <h1>Flight Details:</h1>
-                <p id="price${i}">Price: ${data[i].Price}</p>
-                <p id="departDate{i}">Departure Time: ${data[i].departDate}</p>
-                <p id="returnDate{i}">Return Time: ${data[i].returnDate}</p>
-                <p id="flyFrom{i}">Departure City: ${data[i].flyFrom}</p>
-                <p id="flyTo{i}">Arrival City: ${data[i].flyTo}</p>`;
+                    <div>
+                    <h1>Flight Details:</h1>
+                    <p id="price${i}">Price: ${data[i].Price}</p>
+                    <p id="departDate{i}">Departure Time: ${data[i].departDate}</p>
+                    <p id="returnDate{i}">Return Time: ${data[i].returnDate}</p>
+                    <p id="flyFrom{i}">Departure City: ${data[i].flyFrom}</p>
+                    <p id="flyTo{i}">Arrival City: ${data[i].flyTo}</p>`;
                 str += `</div>`;
                 document.getElementById('result').innerHTML += str;
             }
@@ -154,7 +156,7 @@
     <div class="container-fluid" id="frame">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Flight Information</h1>
+                <h1>Flight Information System - ANT</h1>
 
 
                 <div class="row" id="destenationDIV">
@@ -168,6 +170,16 @@
                             Fly To
                         </p>
                         <input type="text" class="form-control" placeholder="Country, city or airport" id="flytoinput">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>
+                                Show With Connections
+                            </p>
+                            <input type="text" class="form-control" name="Dest" id="Set_Connection"><br>
+
+                            <input type="button" class="btn btn-primary btn-block" value="Show With Connections" id="ConBTN" />
+                        </div>
                     </div>
                 </div>
 
@@ -195,7 +207,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-12" > 
+            <div class="col-sm-12">
                 <div id="result"></div>
             </div>
         </div>
