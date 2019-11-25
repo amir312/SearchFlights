@@ -38,3 +38,8 @@ h1{
 #MyflightBTN{
     background-color:red;
 }
+
+
+#FlightsDiv {
+    border: 2px solid blue;
+}
